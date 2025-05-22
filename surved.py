@@ -3,6 +3,7 @@ import pygame
 
 a = 1
 b = 'sfsfdfsdsdsds'
+c = 3
 
 window = pygame.display.set_mode((1000, 700))
 
