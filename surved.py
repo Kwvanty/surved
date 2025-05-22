@@ -1,9 +1,7 @@
 from pygame import *
 import pygame
 
-a = 1
-b = 'sfsfdfsdsdsds'
-c = 3
+a = 'Artem Kovalchyk lox'
 
 window = pygame.display.set_mode((1000, 700))
 
