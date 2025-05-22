@@ -1,6 +1,8 @@
 from pygame import *
 import pygame
 
+a = 1
+
 window = pygame.display.set_mode((1000, 700))
 
 screen_width = 1200
