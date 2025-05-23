@@ -34,6 +34,7 @@ def draw_grid():
 
 tile_size = 120
 
+
 class World():
     def __init__(self, data):
         self.tile_list = []
@@ -177,12 +178,13 @@ def Check_collision(sprite, tiles):
 a1 = 1
 def player_in_the_water():
     global player_in_the_water_img, a1
-    player_in_the_water_img.show()
     a1 = 0
 
 world = World(world_data)
 game_loop = True
 while game_loop:
+    player_in_the_water_img.rect.x = player.rect.x
+    player_in_the_water_img.rect.y = player.rect.y
     window.blit(background1, (0, 0))
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
@@ -193,6 +195,8 @@ while game_loop:
     if Check_collision(player.rect, world.tile_list):
         a1 = 1
     world.draw()
+    if a1 == 0:
+        player_in_the_water_img.show()
     if a1 == 1:
         player.show()
     if keys[pygame.K_d]:
