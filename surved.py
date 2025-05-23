@@ -1,7 +1,7 @@
 from pygame import *
 import pygame
 
-a = 'Artem Kovalchyk lox'
+ABOBA = 'Aboba'
 
 window = pygame.display.set_mode((1000, 700))
 
@@ -168,7 +168,6 @@ world_data = [
 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]
 
-pl_sp = 0
 
 world = World(world_data)
 game_loop = True
@@ -177,21 +176,16 @@ while game_loop:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_loop = False
+            
     world.draw()
     player.show()
-    if pl_sp >= 0:
-        pl_sp -= 1
     if keys[pygame.K_d]:
-        pl_sp += 1
-        player.rect.x += pl_sp
+        player.rect.x += 8
     if keys[pygame.K_a]:
-        pl_sp += 1
-        player.rect.x -= pl_sp
+        player.rect.x -= 8
     if keys[pygame.K_w]:
-        pl_sp += 1
-        player.rect.y -= pl_sp
+        player.rect.y -= 8
     if keys[pygame.K_s]:
-        pl_sp += 1
-        player.rect.y += pl_sp
+        player.rect.y += 8
     fps.tick(60)
     pygame.display.update()
