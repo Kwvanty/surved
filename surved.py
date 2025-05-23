@@ -4,7 +4,7 @@ import pygame
 ABOBA = 'Aboba'
 
 window = pygame.display.set_mode((1000, 700))
-
+background1 = transform.scale(image.load('bg.jpg'), (1000, 700))
 screen_width = 1200
 screen_heigth = 708
 
@@ -25,6 +25,7 @@ class Player(Game_Spaite):
 fps = pygame.time.Clock()
 
 player = Player(500, 500, 50, 70, 'player.png')
+player_in_the_water_img = Player(500, 500, 50, 70, 'player_w.png')
 
 def draw_grid():
     for line in range(0, 100):
@@ -167,18 +168,33 @@ world_data = [
 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]
-
+def Check_collision(sprite, tiles):
+    global gravitation, vel_y
+    for tile in tiles:
+        if sprite.colliderect(tile[1]):
+            return True
+    return False
+a1 = 1
+def player_in_the_water():
+    global player_in_the_water_img, a1
+    player_in_the_water_img.show()
+    a1 = 0
 
 world = World(world_data)
 game_loop = True
 while game_loop:
+    window.blit(background1, (0, 0))
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_loop = False
-            
+    if not(Check_collision(player.rect, world.tile_list)):
+        player_in_the_water()
+    if Check_collision(player.rect, world.tile_list):
+        a1 = 1
     world.draw()
-    player.show()
+    if a1 == 1:
+        player.show()
     if keys[pygame.K_d]:
         player.rect.x += 8
     if keys[pygame.K_a]:
