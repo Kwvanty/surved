@@ -357,7 +357,7 @@ if 'Kwvanty' != 'gey':
         tree.rect.y = randint(0, 600)
 
     wood_log_in_inventory = 0
-    wood_block_in_inventory = 0
+    wood_block_in_inventory = 200
 
     a1 = 1
     def player_in_the_water():
