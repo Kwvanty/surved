@@ -47,7 +47,7 @@ def draw_grid():
     for line in range(0, 100):
         pygame.draw.line(window, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size))
         pygame.draw.line(window, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_heigth))
-
+a10 = 0
 tile_size = 120
 a5 = randint(300, 700)
 a6 = randint(300, 700)
@@ -56,6 +56,8 @@ wood_log = Game_Spaite(0, 0, 40, 40, 'wood_log.png')
 wood_log_in_inventory_o = Game_Spaite(10, 200, 40, 40, 'wood_log.png')
 wood_block_in_inventory1 = Game_Spaite(15, 605, 25, 25, 'wood_block.png')
 wood_block_in_inventory2 = Game_Spaite(15, 245, 25, 25, 'wood_block.png')
+apple = Game_Spaite(0, 0, 40, 40, 'apple.png')
+apple_in_inventory_o = Game_Spaite(10, 280, 40, 40, 'apple.png')
 if 'Kwvanty' != 'gey':
     class World():
         def __init__(self, data):
@@ -360,7 +362,7 @@ if 'Kwvanty' != 'gey':
     def player_in_the_water():
         global player_in_the_water_img, a1
         a1 = 0
-
+apples_in_inventory = 0
 game_loop = True
 while game_loop:
     if 'Kwvanty' != 'gey':
@@ -379,11 +381,13 @@ while game_loop:
             tree.show()
         if a7 == 1:
             wood_log.show() 
+            apple.show()
         wood_log.rect.x = tree.rect.x + 20
         wood_log.rect.y = tree.rect.y + 20
         player_in_the_water_img.rect.x = player.rect.x
         player_in_the_water_img.rect.y = player.rect.y
         keys = pygame.key.get_pressed()
+        obj.draw()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_loop = False
@@ -394,10 +398,24 @@ while game_loop:
                     a4 = 1
                 if tree.rect.collidepoint(event.pos):
                     a7 = 1
+                    apple.rect.x = tree.rect.x + 40
+                    apple.rect.y = tree.rect.y + 40
                 if wood_block_in_inventory1.rect.collidepoint(event.pos) and wood_log_in_inventory >= 1:
                     wood_log_in_inventory -= 1
                     wood_block_in_inventory += 4
                     a8 = 1
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print('Mouse clicked at' + str(event.pos), a3, a10)
+                if a10 == 1:
+                    if a3 == 0:
+                        a3 = 10
+                    #wood_block_in_inventory -= 1
+                    #a9 = 1
+                    #row = mouse_x // tile_size_obj
+                    #col = mouse_y // tile_size_obj
+                    #if Objekts_in_the_world_data_obj[row][col] == 0:
+                    #    obj = Objekts_in_the_world(Objekts_in_the_world_data_obj)
+                    #    Objekts_in_the_world_data_obj[row][col] = 2
                 
         block_num = font.render(f'{wood_block_in_inventory}', True, (255, 255, 255))
         if a8 == 1:
@@ -414,7 +432,7 @@ while game_loop:
             player_in_the_water_img.show()
         if a1 == 1:
             player.show()
-        obj.draw()
+        
         if keys[pygame.K_d]:
             player.rect.x += 8
         if keys[pygame.K_a]:
@@ -423,13 +441,8 @@ while game_loop:
             player.rect.y -= 8
         if keys[pygame.K_s]:
             player.rect.y += 8
-        if keys[pygame.K_f]:
-            a9 = 1
-            row = player.rect.y // tile_size_obj
-            col = player.rect.x // tile_size_obj
-            if Objekts_in_the_world_data_obj[row][col] == 0:
-                obj = Objekts_in_the_world(Objekts_in_the_world_data_obj)
-                Objekts_in_the_world_data_obj[row][col] = 2
+        if keys[pygame.K_z]:
+            a10 = 1
         if a2 == 0 and a3 == 0:
             if keys[pygame.K_TAB]:
                 a2 = 1
@@ -443,19 +456,23 @@ while game_loop:
             inv2.draw()
         if player.rect.colliderect(wood_log.rect) and a7 == 1:
             a7 = 0
-            wood_log_in_inventory += 1
+            apples_in_inventory += randint(1, 2)
+
+            wood_log_in_inventory += randint(4, 6)
             tree.rect.x = randint(0, 800)
             tree.rect.y = randint(0, 600)
-            if keys[pygame.K_e]:
+        if keys[pygame.K_e]:
                 a3 = 10
                 a2 = 1
                 a4 = 1
                 wood_log.rect.x = randint(0, 800)
                 wood_log.rect.y = randint(0, 600)
     if 'Kwvanty' != 'gey':
-
+        apple_num = font.render(f'{apples_in_inventory}', True, (255, 255, 255))
         log_num = font.render(f'{wood_log_in_inventory}', True, (255, 255, 255))
-        
+        if apples_in_inventory >= 1:
+            apple_in_inventory_o.show()
+            window.blit(apple_num, (10, 280))
         if wood_log_in_inventory >= 1:
             wood_log_in_inventory_o.show()
             window.blit(log_num, (10, 200))
