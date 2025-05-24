@@ -47,6 +47,7 @@ def draw_grid():
     for line in range(0, 100):
         pygame.draw.line(window, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size))
         pygame.draw.line(window, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_heigth))
+mouse_x, mouse_y = pygame.mouse.get_pos()
 a10 = 0
 tile_size = 120
 a5 = randint(300, 700)
@@ -407,16 +408,17 @@ while game_loop:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print('Mouse clicked at' + str(event.pos), a3, a10)
                 if a10 == 1:
+                    a3 = 10
                     if a3 == 0:
-                        a3 = 10
-                    #wood_block_in_inventory -= 1
-                    #a9 = 1
-                    #row = mouse_x // tile_size_obj
-                    #col = mouse_y // tile_size_obj
-                    #if Objekts_in_the_world_data_obj[row][col] == 0:
-                    #    obj = Objekts_in_the_world(Objekts_in_the_world_data_obj)
-                    #    Objekts_in_the_world_data_obj[row][col] = 2
-                
+                        wood_block_in_inventory -= 1
+                        a9 = 1
+                        mouse_x, mouse_y = pygame.mouse.get_pos()
+                        row = mouse_x // tile_size_obj
+                        col = mouse_y // tile_size_obj
+                        if Objekts_in_the_world_data_obj[row][col] == 0:
+                            print("работает")
+                            Objekts_in_the_world_data_obj[row][col] = 2
+                            obj = Objekts_in_the_world(Objekts_in_the_world_data_obj)
         block_num = font.render(f'{wood_block_in_inventory}', True, (255, 255, 255))
         if a8 == 1:
             wood_block_in_inventory2.show()
