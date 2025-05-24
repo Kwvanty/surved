@@ -7,6 +7,7 @@ a2 = 0
 a3 = 0
 a4 = 0
 a7 = 0
+a8 = 0
 
 font = font.Font(None, 30)
 
@@ -52,8 +53,8 @@ a6 = randint(300, 700)
 tree = Game_Spaite(500, 500, 120, 120, 'tree.png')
 wood_log = Game_Spaite(0, 0, 40, 40, 'wood_log.png')
 wood_log_in_inventory_o = Game_Spaite(10, 200, 40, 40, 'wood_log.png')
-wood_block_in_inventory_o = Game_Spaite(10, 240, 40, 40, 'wood_block.png')
-
+wood_block_in_inventory1 = Game_Spaite(15, 605, 25, 25, 'wood_block.png')
+wood_block_in_inventory2 = Game_Spaite(15, 245, 25, 25, 'wood_block.png')
 if 'Kwvanty' != 'gey':
     class World():
         def __init__(self, data):
@@ -342,6 +343,7 @@ if 'Kwvanty' != 'gey':
         tree.rect.y = randint(0, 600)
 
     wood_log_in_inventory = 0
+    wood_block_in_inventory = 0
 
     a1 = 1
     def player_in_the_water():
@@ -354,7 +356,12 @@ while game_loop:
         window.blit(background1, (0, 0))
         if a3 != 0:
             a3 -= 1
-        
+        inventory_cell1.show()
+        inventory_cell2.show()
+        inventory_cell3.show()
+        inventory_cell4.show()
+        inventory_cell5.show()
+        inventory_cell6.show()
         world.draw()
         if a7 == 0:
             tree.show()
@@ -375,8 +382,17 @@ while game_loop:
                     a4 = 1
                 if tree.rect.collidepoint(event.pos):
                     a7 = 1
+                if wood_block_in_inventory1.rect.collidepoint(event.pos) and wood_log_in_inventory >= 1:
+                    wood_log_in_inventory -= 1
+                    wood_block_in_inventory += 4
+                    a8 = 1
+        block_num = font.render(f'{wood_block_in_inventory}', True, (255, 255, 255))
+        if a8 == 1:
+            wood_block_in_inventory2.show()
+            window.blit(block_num, (10, 240))
         if a4 == 1:
             inv.draw()
+            wood_block_in_inventory1.show()
         if not(Check_collision(player.rect, world.tile_list)):
             player_in_the_water()
         if Check_collision(player.rect, world.tile_list):
@@ -417,13 +433,9 @@ while game_loop:
                 wood_log.rect.x = randint(0, 800)
                 wood_log.rect.y = randint(0, 600)
     if 'Kwvanty' != 'gey':
-        inventory_cell1.show()
-        inventory_cell2.show()
-        inventory_cell3.show()
-        inventory_cell4.show()
-        inventory_cell5.show()
-        inventory_cell6.show()
+
         log_num = font.render(f'{wood_log_in_inventory}', True, (255, 255, 255))
+        
         if wood_log_in_inventory >= 1:
             wood_log_in_inventory_o.show()
             window.blit(log_num, (10, 200))
