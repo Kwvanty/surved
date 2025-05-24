@@ -8,6 +8,7 @@ a3 = 0
 a4 = 0
 a7 = 0
 a8 = 0
+a9 = 0
 
 font = font.Font(None, 30)
 
@@ -88,16 +89,26 @@ if 'Kwvanty' != 'gey':
 
     tile_size_obj = 120
 
+    
+
     class Objekts_in_the_world():
         def __init__(self, data_obj):
             self.tile_list_obj = []
             crafting_table_img = pygame.image.load('crafting_table.png')
+            wood_block_img = pygame.image.load('wood_block.png')
             row_count_obj = 0
             for row_obj in data_obj:
                 col_count_obj = 0
                 for tile_obj in row_obj:
                     if tile_obj == 1:
                         img_obj = pygame.transform.scale(crafting_table_img, (tile_size, tile_size))
+                        img_rect_obj = img_obj.get_rect()
+                        img_rect_obj.x = col_count_obj * tile_size_obj
+                        img_rect_obj.y = row_count_obj * tile_size_obj
+                        tile_obj = (img_obj, img_rect_obj)
+                        self.tile_list_obj.append(tile_obj)
+                    if tile_obj == 2:
+                        img_obj = pygame.transform.scale(wood_block_img, (tile_size, tile_size))
                         img_rect_obj = img_obj.get_rect()
                         img_rect_obj.x = col_count_obj * tile_size_obj
                         img_rect_obj.y = row_count_obj * tile_size_obj
@@ -171,7 +182,7 @@ if 'Kwvanty' != 'gey':
     Objekts_in_the_world_data_obj = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -354,6 +365,7 @@ game_loop = True
 while game_loop:
     if 'Kwvanty' != 'gey':
         window.blit(background1, (0, 0))
+        a9 = 0
         if a3 != 0:
             a3 -= 1
         inventory_cell1.show()
@@ -386,6 +398,7 @@ while game_loop:
                     wood_log_in_inventory -= 1
                     wood_block_in_inventory += 4
                     a8 = 1
+                
         block_num = font.render(f'{wood_block_in_inventory}', True, (255, 255, 255))
         if a8 == 1:
             wood_block_in_inventory2.show()
@@ -410,6 +423,14 @@ while game_loop:
             player.rect.y -= 8
         if keys[pygame.K_s]:
             player.rect.y += 8
+        if keys[pygame.K_f]:
+            a9 = 1
+            row = player.rect.y // tile_size_obj
+            col = player.rect.x // tile_size_obj
+            if Objekts_in_the_world_data_obj[row][col] == 0:
+                print('Object placed')
+                obj = Objekts_in_the_world(Objekts_in_the_world_data_obj)
+                Objekts_in_the_world_data_obj[row][col] = 2
         if a2 == 0 and a3 == 0:
             if keys[pygame.K_TAB]:
                 a2 = 1
