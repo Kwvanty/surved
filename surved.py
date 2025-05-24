@@ -1,6 +1,14 @@
 from pygame import *
 import pygame
 from random import randint
+font.init()
+
+a2 = 0
+a3 = 0
+a4 = 0
+a7 = 0
+
+font = font.Font(None, 30)
 
 
 window = pygame.display.set_mode((1000, 700))
@@ -22,6 +30,12 @@ class Player(Game_Spaite):
     def show(self):
         window.blit(self.image, self.rect)
 
+inventory_cell1 = Game_Spaite(10, 200, 30, 30, 'inventory.png')
+inventory_cell2 = Game_Spaite(10, 240, 30, 30, 'inventory.png')
+inventory_cell3 = Game_Spaite(10, 280, 30, 30, 'inventory.png')
+inventory_cell4 = Game_Spaite(10, 320, 30, 30, 'inventory.png')
+inventory_cell5 = Game_Spaite(10, 360, 30, 30, 'inventory.png')
+inventory_cell6 = Game_Spaite(10, 400, 30, 30, 'inventory.png')
 fps = pygame.time.Clock()
 
 player = Player(500, 500, 50, 70, 'player.png')
@@ -37,7 +51,8 @@ a5 = randint(300, 700)
 a6 = randint(300, 700)
 tree = Game_Spaite(500, 500, 120, 120, 'tree.png')
 wood_log = Game_Spaite(0, 0, 40, 40, 'wood_log.png')
-wood_log_in_inventory_o = Game_Spaite(0, 0, 40, 40, 'wood_log.png')
+wood_log_in_inventory_o = Game_Spaite(10, 200, 40, 40, 'wood_log.png')
+wood_block_in_inventory_o = Game_Spaite(10, 240, 40, 40, 'wood_block.png')
 
 if 'Kwvanty' != 'gey':
     class World():
@@ -309,100 +324,108 @@ if 'Kwvanty' != 'gey':
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
 
-inv2 = INVENTORY(INVENTORY_data_inv1)
-inv = Craft(Craft_data_inv)
-obj = Objekts_in_the_world(Objekts_in_the_world_data_obj)
-world = World(world_data)
+    inv2 = INVENTORY(INVENTORY_data_inv1)
+    inv = Craft(Craft_data_inv)
+    obj = Objekts_in_the_world(Objekts_in_the_world_data_obj)
+    world = World(world_data)
 
-craftinghit = Game_Spaite(480, 240, 120, 120, 'crafting_table.png')
-def Check_collision(sprite, tiles):
-    global gravitation, vel_y
-    for tile in tiles:
-        if sprite.colliderect(tile[1]):
-            return True
-    return False
-print(a5, a6)
-if Check_collision(tree.rect, world.tile_list):
-    tree.rect.x = randint(0, 800)
-    tree.rect.y = randint(0, 600)
+    craftinghit = Game_Spaite(480, 240, 120, 120, 'crafting_table.png')
+    def Check_collision(sprite, tiles):
+        global gravitation, vel_y
+        for tile in tiles:
+            if sprite.colliderect(tile[1]):
+                return True
+        return False
+    print(a5, a6)
+    if Check_collision(tree.rect, world.tile_list):
+        tree.rect.x = randint(0, 800)
+        tree.rect.y = randint(0, 600)
 
-wood_log_in_inventory = 0
+    wood_log_in_inventory = 0
 
-a1 = 1
-def player_in_the_water():
-    global player_in_the_water_img, a1
-    a1 = 0
-a2 = 0
-a3 = 0
-a4 = 0
-a7 = 0
+    a1 = 1
+    def player_in_the_water():
+        global player_in_the_water_img, a1
+        a1 = 0
+
 game_loop = True
 while game_loop:
-    window.blit(background1, (0, 0))
-    if a3 != 0:
-        a3 -= 1
-    
-    world.draw()
-    if a7 == 0:
-        tree.show()
-    if a7 == 1:
-        wood_log.show() 
-    wood_log.rect.x = tree.rect.x + 20
-    wood_log.rect.y = tree.rect.y + 20
-    player_in_the_water_img.rect.x = player.rect.x
-    player_in_the_water_img.rect.y = player.rect.y
-    keys = pygame.key.get_pressed()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            game_loop = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if craftinghit.rect.collidepoint(event.pos):
+    if 'Kwvanty' != 'gey':
+        window.blit(background1, (0, 0))
+        if a3 != 0:
+            a3 -= 1
+        
+        world.draw()
+        if a7 == 0:
+            tree.show()
+        if a7 == 1:
+            wood_log.show() 
+        wood_log.rect.x = tree.rect.x + 20
+        wood_log.rect.y = tree.rect.y + 20
+        player_in_the_water_img.rect.x = player.rect.x
+        player_in_the_water_img.rect.y = player.rect.y
+        keys = pygame.key.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_loop = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if craftinghit.rect.collidepoint(event.pos):
+                    a3 = 10
+                    a2 = 1
+                    a4 = 1
+                if tree.rect.collidepoint(event.pos):
+                    a7 = 1
+        if a4 == 1:
+            inv.draw()
+        if not(Check_collision(player.rect, world.tile_list)):
+            player_in_the_water()
+        if Check_collision(player.rect, world.tile_list):
+            a1 = 1
+        if a1 == 0:
+            player_in_the_water_img.show()
+        if a1 == 1:
+            player.show()
+        obj.draw()
+        if keys[pygame.K_d]:
+            player.rect.x += 8
+        if keys[pygame.K_a]:
+            player.rect.x -= 8
+        if keys[pygame.K_w]:
+            player.rect.y -= 8
+        if keys[pygame.K_s]:
+            player.rect.y += 8
+        if a2 == 0 and a3 == 0:
+            if keys[pygame.K_TAB]:
+                a2 = 1
+                a3 = 10
+        if a2 == 1 and a3 == 0:
+            if keys[pygame.K_TAB]:
+                a2 = 0
+                a3 = 10
+                a4 = 0
+        if a2 == 1:
+            inv2.draw()
+        if player.rect.colliderect(wood_log.rect) and a7 == 1:
+            a7 = 0
+            wood_log_in_inventory += 1
+            tree.rect.x = randint(0, 800)
+            tree.rect.y = randint(0, 600)
+            if keys[pygame.K_e]:
                 a3 = 10
                 a2 = 1
                 a4 = 1
-            if tree.rect.collidepoint(event.pos):
-                a7 = 1
-    if a4 == 1:
-        inv.draw()
-    if not(Check_collision(player.rect, world.tile_list)):
-        player_in_the_water()
-    if Check_collision(player.rect, world.tile_list):
-        a1 = 1
-    if wood_log_in_inventory >= 1:
-        wood_log_in_inventory_o.show()
-    if a1 == 0:
-        player_in_the_water_img.show()
-    if a1 == 1:
-        player.show()
-    obj.draw()
-    if keys[pygame.K_d]:
-        player.rect.x += 8
-    if keys[pygame.K_a]:
-        player.rect.x -= 8
-    if keys[pygame.K_w]:
-        player.rect.y -= 8
-    if keys[pygame.K_s]:
-        player.rect.y += 8
-    if a2 == 0 and a3 == 0:
-        if keys[pygame.K_TAB]:
-            a2 = 1
-            a3 = 10
-    if a2 == 1 and a3 == 0:
-        if keys[pygame.K_TAB]:
-            a2 = 0
-            a3 = 10
-            a4 = 0
-    if a2 == 1:
-        inv2.draw()
-    if player.rect.colliderect(wood_log.rect) and a7 == 1:
-        a7 = 0
-        tree.rect.x = randint(0, 800)
-        tree.rect.y = randint(0, 600)
-        if keys[pygame.K_e]:
-            a3 = 10
-            a2 = 1
-            a4 = 1
-            wood_log.rect.x = randint(0, 800)
-            wood_log.rect.y = randint(0, 600)
+                wood_log.rect.x = randint(0, 800)
+                wood_log.rect.y = randint(0, 600)
+    if 'Kwvanty' != 'gey':
+        inventory_cell1.show()
+        inventory_cell2.show()
+        inventory_cell3.show()
+        inventory_cell4.show()
+        inventory_cell5.show()
+        inventory_cell6.show()
+        log_num = font.render(f'{wood_log_in_inventory}', True, (255, 255, 255))
+        if wood_log_in_inventory >= 1:
+            wood_log_in_inventory_o.show()
+            window.blit(log_num, (10, 200))
     fps.tick(60)
     pygame.display.update()
