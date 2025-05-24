@@ -412,7 +412,7 @@ while game_loop:
                         wood_block_in_inventory -= 1
                         a9 = 1
                         mouse_x, mouse_y = event.pos
-                        print(mouse_x, mouse_y)
+                        print(mouse_x, mouse_y, "mouse")
                         row = mouse_x // tile_size_obj
                         col = mouse_y // tile_size_obj
                         print(row, col)
@@ -420,7 +420,6 @@ while game_loop:
                             print("работает")
                             obj = Objekts_in_the_world(Objekts_in_the_world_data_obj)
                             Objekts_in_the_world_data_obj[row][col] = 2
-            
         block_num = font.render(f'{wood_block_in_inventory}', True, (255, 255, 255))
         if a8 == 1:
             wood_block_in_inventory2.show()
@@ -480,6 +479,5 @@ while game_loop:
         if wood_log_in_inventory >= 1:
             wood_log_in_inventory_o.show()
             window.blit(log_num, (10, 200))
-        print(a3, a2, a4, a5, a6)  
     fps.tick(60)
     pygame.display.update()
