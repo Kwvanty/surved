@@ -68,6 +68,9 @@ apple_in_inventory_o = Game_Spaite(10, 280, 40, 40, 'apple.png')
 pickaxe = Game_Spaite(10, 320, 30, 30, 'pickaxe.png')
 craft_pickaxe = Game_Spaite(40, 600, 30, 30, 'pickaxe.png')
 
+player_menu = Game_Spaite(-400, 550, 50, 70, 'player.png')
+zombie_menu = Game_Spaite(-570, 550, 50, 70, 'zombie.png')
+
 startmenu = transform.scale(image.load('startmenu.jpg'), (1000, 700))
 button_play = Game_Spaite(400, 300, 200, 80, 'button_play.jpg')
 button_exit = Game_Spaite(400, 400, 200, 80, 'button_exit.jpg')
@@ -352,6 +355,15 @@ while menu_loop:
     window.blit(startmenu, (0, 0))
     button_exit.show()
     button_play.show()
+    player_menu.show()
+    zombie_menu.show()
+    zombie_menu.rect.x += 4
+    player_menu.rect.x += 4
+    if player_menu.rect.x >= 1600:
+        player_menu.rect.x = -100
+    if zombie_menu.rect.x >= 1600:
+        zombie_menu.rect.x = -100
+    fps.tick(60)
     pygame.display.update()
 while game_loop:
     mouse_x, mouse_y = mouse.get_pos()
