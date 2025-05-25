@@ -68,6 +68,10 @@ apple_in_inventory_o = Game_Spaite(10, 280, 40, 40, 'apple.png')
 pickaxe = Game_Spaite(10, 320, 30, 30, 'pickaxe.png')
 craft_pickaxe = Game_Spaite(40, 600, 30, 30, 'pickaxe.png')
 
+startmenu = transform.scale(image.load('startmenu.jpg'), (1000, 700))
+button_play = Game_Spaite(400, 300, 200, 80, 'button_play.jpg')
+button_exit = Game_Spaite(400, 400, 200, 80, 'button_exit.jpg')
+
 if 'Kwvanty' != 'gey':
     class World():
         def __init__(self, data):
@@ -322,6 +326,10 @@ if 'Kwvanty' != 'gey':
     def player_in_the_water():
         global player_in_the_water_img, a1
         a1 = 0
+
+menu_loop = True
+game_loop = False
+
 hp = 10
 pl_sp = 4
 Cobblestone_inv = 0
@@ -330,7 +338,21 @@ b2 = 0
 b3 = 0
 scene_y = 1
 apples_in_inventory = 0
-game_loop = True
+
+while menu_loop:
+    for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                menu_loop = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button_play.rect.collidepoint(pygame.mouse.get_pos()):
+                    menu_loop = False
+                    game_loop = True
+                if button_exit.rect.collidepoint(pygame.mouse.get_pos()):
+                    menu_loop = False
+    window.blit(startmenu, (0, 0))
+    button_exit.show()
+    button_play.show()
+    pygame.display.update()
 while game_loop:
     mouse_x, mouse_y = mouse.get_pos()
     row = mouse_y // tile_size
