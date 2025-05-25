@@ -2,6 +2,11 @@ from pygame import *
 import pygame
 from random import randint
 font.init()
+pygame.mixer.init()
+
+pygame.mixer.music.load("game_melodie.mp3") 
+pygame.mixer.music.set_volume(0.5) 
+pygame.mixer.music.play(-1)
 
 a2 = 0
 a3 = 0
@@ -68,8 +73,8 @@ apple_in_inventory_o = Game_Spaite(10, 280, 40, 40, 'apple.png')
 pickaxe = Game_Spaite(10, 320, 30, 30, 'pickaxe.png')
 craft_pickaxe = Game_Spaite(40, 600, 30, 30, 'pickaxe.png')
 
-player_menu = Game_Spaite(-400, 550, 50, 70, 'player.png')
-zombie_menu = Game_Spaite(-570, 550, 50, 70, 'zombie.png')
+player_menu = Game_Spaite(-400, 570, 50, 70, 'player.png')
+zombie_menu = Game_Spaite(-570, 570, 50, 70, 'zombie.png')
 
 startmenu = transform.scale(image.load('startmenu.jpg'), (1000, 700))
 button_play = Game_Spaite(400, 300, 200, 80, 'button_play.jpg')
