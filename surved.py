@@ -42,6 +42,18 @@ class Player(Game_Spaite):
     def show(self):
         window.blit(self.image, self.rect)
 
+heart = Game_Spaite(50, 200, 30, 30, 'heart.png')
+heart1 = Game_Spaite(50, 240, 30, 30, 'heart.png')
+heart2 = Game_Spaite(50, 280, 30, 30, 'heart.png')
+heart3 = Game_Spaite(50, 320, 30, 30, 'heart.png')
+heart4 = Game_Spaite(50, 360, 30, 30, 'heart.png')
+heart5 = Game_Spaite(50, 400, 30, 30, 'heart.png')
+heart6 = Game_Spaite(50, 440, 30, 30, 'heart.png')
+heart7 = Game_Spaite(50, 480, 30, 30, 'heart.png')
+heart8 = Game_Spaite(50, 520, 30, 30, 'heart.png')
+heart9 = Game_Spaite(50, 560, 30, 30, 'heart.png')
+
+
 inventory_cell_sellect = Game_Spaite(10, 200, 30, 30, 'inventory_select.png')
 inventory_cell1 = Game_Spaite(10, 200, 30, 30, 'inventory.png')
 inventory_cell2 = Game_Spaite(10, 240, 30, 30, 'inventory.png')
@@ -74,10 +86,15 @@ apple_in_inventory_o = Game_Spaite(10, 280, 40, 40, 'apple.png')
 
 zombie = Player(-100, -100, 25, 35, 'zombie.png')
 
-zombie_agro_hit_up = Game_Spaite(-100, -100, 500, 250, 'null.png')
-zombie_agro_hit_down = Game_Spaite(-100, -100, 500, 250, 'null.png')
-zombie_agro_hit_left = Game_Spaite(-100, -100, 250, 500, 'null.png')
-zombie_agro_hit_right = Game_Spaite(-100, -100, 250, 500, 'null.png')
+player_hit_up = Game_Spaite(-100, -100, 9, 5, 'null.png')
+player_hit_down = Game_Spaite(-100, -100, 9, 5, 'null.png')
+player_hit_left = Game_Spaite(-100, -100, 5, 9, 'null.png')
+player_hit_right = Game_Spaite(-100, -100, 5, 9, 'null.png')
+
+zombie_agro_hit_up = Game_Spaite(-100, -100, 1000, 500, 'null.png')
+zombie_agro_hit_down = Game_Spaite(-100, -100, 1000, 500, 'null.png')
+zombie_agro_hit_left = Game_Spaite(-100, -100, 500, 1000, 'null.png')
+zombie_agro_hit_right = Game_Spaite(-100, -100, 500, 1000, 'null.png')
 
 pickaxe = Game_Spaite(10, 320, 30, 30, 'pickaxe.png')
 craft_pickaxe = Game_Spaite(40, 600, 30, 30, 'pickaxe.png')
@@ -410,20 +427,25 @@ while game_loop:
     if floos != 0:
         floos -= 1
     if zombie.rect.colliderect(player.rect) and floos == 0:
+        floos = 60
         hp -= 1
-        floos = 10
-    zombie_agro_hit_up.rect.y = zombie.rect.y - 250
-    zombie_agro_hit_up.rect.x = zombie.rect.x - 250
+    zombie_agro_hit_up.rect.y = zombie.rect.y - 500
+    zombie_agro_hit_up.rect.x = zombie.rect.x - 500
     zombie_agro_hit_down.rect.y = zombie.rect.y
-    zombie_agro_hit_down.rect.x = zombie.rect.x - 250
-    zombie_agro_hit_left.rect.y = zombie.rect.y - 250
-    zombie_agro_hit_left.rect.x = zombie.rect.x - 250
-    zombie_agro_hit_right.rect.y = zombie.rect.y - 250 
+    zombie_agro_hit_down.rect.x = zombie.rect.x - 500
+    zombie_agro_hit_left.rect.y = zombie.rect.y - 500
+    zombie_agro_hit_left.rect.x = zombie.rect.x - 500
+    zombie_agro_hit_right.rect.y = zombie.rect.y - 500 
     zombie_agro_hit_right.rect.x = zombie.rect.x 
+
+    
+
+
     b6 += 1
     if b6 >= 100:
         b6 = 0
         b5 += 1
+    
     mouse_x, mouse_y = mouse.get_pos()
     row = mouse_y // tile_size
     col = mouse_x // tile_size
@@ -471,7 +493,9 @@ while game_loop:
         #zombie_agro_hit_down.show()
         #zombie_agro_hit_left.show()
         #zombie_agro_hit_right.show()
-    
+
+        
+
         inventory_cell_sellect.show()
         if a7 == 0 and scene_y == 2:
             tree.show()
@@ -497,7 +521,10 @@ while game_loop:
                 a7 = 1
                 apple.rect.x = tree.rect.x + 40
                 apple.rect.y = tree.rect.y + 40
-            
+        if zombie_xp == 0:
+            zombie.rect.x = randint(0, 2000)
+            zombie.rect.y = randint(0, 2000)
+            zombie_xp = 10
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_loop = False
@@ -514,6 +541,12 @@ while game_loop:
                 if shaht.rect.collidepoint(pygame.mouse.get_pos()):
                     Cobblestone_inv += b5
                     b5 = 0
+                if zombie.rect.collidepoint(pygame.mouse.get_pos()):
+                    zombie_xp -= 1
+        if m1 and cell == 3 and hp < 10 and apples_in_inventory >= 1:
+            hp += 1
+            apples_in_inventory -= 1
+
         if m2 and a3 == 0 and a10 == 0:
             a3 = 10
             cell += 1
@@ -522,14 +555,15 @@ while game_loop:
             cell = 1
             inventory_cell_sellect.rect.y = 200
         spawn(zombie, p)
-        if player.rect.colliderect(zombie_agro_hit_up.rect):
-            zombie.rect.y -= 2
-        if player.rect.colliderect(zombie_agro_hit_down.rect):
-            zombie.rect.y += 2
-        if player.rect.colliderect(zombie_agro_hit_left.rect):
-            zombie.rect.x -= 2
-        if player.rect.colliderect(zombie_agro_hit_right.rect):
-            zombie.rect.x += 2
+        if not(Check_collision(zombie.rect, obj.tile_list_obj)):
+            if player.rect.colliderect(zombie_agro_hit_up.rect):
+                zombie.rect.y -= 2
+            if player.rect.colliderect(zombie_agro_hit_down.rect):
+                zombie.rect.y += 2
+            if player.rect.colliderect(zombie_agro_hit_left.rect):
+                zombie.rect.x -= 2
+            if player.rect.colliderect(zombie_agro_hit_right.rect):
+                zombie.rect.x += 2
 
         if Cobblestone_inv >= 1:
             Cobblestone_inventory.show()
@@ -558,13 +592,13 @@ while game_loop:
         if a1 == 1:
             player.show()
         
-        if keys[pygame.K_d]:
+        if keys[pygame.K_d] and not(Check_collision(player_hit_right.rect, obj.tile_list_obj)):
             player.rect.x += pl_sp
-        if keys[pygame.K_a]:
+        if keys[pygame.K_a] and not(Check_collision(player_hit_left.rect, obj.tile_list_obj)):
             player.rect.x -= pl_sp
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] and not(Check_collision(player_hit_up.rect, obj.tile_list_obj)):
             player.rect.y -= pl_sp
-        if keys[pygame.K_s]:
+        if keys[pygame.K_s]and not(Check_collision(player_hit_down.rect, obj.tile_list_obj)):
             player.rect.y += pl_sp
         if a10 == 0 and a3 == 0:
             if keys[pygame.K_z]:
@@ -618,8 +652,85 @@ while game_loop:
     if b2 != 0:
         b2 -= 2
         window.blit(Builder_off, (150, 10))
-
-    
+    if hp == 10:
+        heart.show()
+        heart1.show()
+        heart2.show()
+        heart3.show()
+        heart4.show()
+        heart5.show()
+        heart6.show()
+        heart7.show()
+        heart8.show()
+        heart9.show()
+    if hp == 9:
+        heart.show()
+        heart1.show()
+        heart2.show()
+        heart3.show()
+        heart4.show()
+        heart5.show()
+        heart6.show()
+        heart7.show()
+        heart8.show()
+    if hp == 8:
+        heart.show()
+        heart1.show()
+        heart2.show()
+        heart3.show()
+        heart4.show()
+        heart5.show()
+        heart6.show()
+        heart7.show()
+    if hp == 7:
+        heart.show()
+        heart1.show()
+        heart2.show()
+        heart3.show()
+        heart4.show()
+        heart5.show()
+        heart6.show()
+    if hp == 6:
+        heart.show()
+        heart1.show()
+        heart2.show()
+        heart3.show()
+        heart4.show()
+        heart5.show()
+    if hp == 5:
+        heart.show()
+        heart1.show()
+        heart2.show()
+        heart3.show()
+        heart4.show()
+    if hp == 4:
+        heart.show()
+        heart1.show()
+        heart2.show()
+        heart3.show()
+    if hp == 3:
+        heart.show()
+        heart1.show()
+        heart2.show()
+    if hp == 2:
+        heart.show()
+        heart1.show()
+    if hp == 1:
+        heart.show()
+    if hp == 0:
+        game_loop = False
+    player_hit_up.rect.y = player.rect.y - 6
+    player_hit_up.rect.x = player.rect.x
+    player_hit_down.rect.y = player.rect.y + 27
+    player_hit_down.rect.x = player.rect.x
+    player_hit_left.rect.y = player.rect.y
+    player_hit_left.rect.x = player.rect.x - 3
+    player_hit_right.rect.y = player.rect.y
+    player_hit_right.rect.x = player.rect.x + 23
+    #player_hit_up.show()
+    #player_hit_down.show()
+    #player_hit_left.show()
+    #player_hit_right.show()  
 
     fps.tick(60)
     pygame.display.update()
