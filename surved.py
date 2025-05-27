@@ -4,9 +4,9 @@ from random import randint
 font.init()
 pygame.mixer.init()
 
-pygame.mixer.music.load("game_melodie.mp3") 
-pygame.mixer.music.set_volume(0.5) 
-pygame.mixer.music.play(-1)
+pygame.mixer.music.load("game_melodie.mp3")
+pygame.mixer.music.set_volume(0.5)
+
 
 a2 = 0
 a3 = 0
@@ -14,6 +14,8 @@ a4 = 0
 a7 = 0
 a8 = 0
 a9 = 0
+
+b4 = 0
 
 font = font.Font(None, 30)
 font2 = pygame.font.SysFont('Comicsansms', 50)
@@ -70,6 +72,13 @@ wood_block_in_inventory2 = Game_Spaite(15, 245, 25, 25, 'wood_block.png')
 apple = Game_Spaite(0, 0, 20, 20, 'apple.png')
 apple_in_inventory_o = Game_Spaite(10, 280, 40, 40, 'apple.png')
 
+zombie = Player(-100, -100, 25, 35, 'zombie.png')
+
+zombie_agro_hit_up = Game_Spaite(-100, -100, 500, 250, 'null.png')
+zombie_agro_hit_down = Game_Spaite(-100, -100, 500, 250, 'null.png')
+zombie_agro_hit_left = Game_Spaite(-100, -100, 250, 500, 'null.png')
+zombie_agro_hit_right = Game_Spaite(-100, -100, 250, 500, 'null.png')
+
 pickaxe = Game_Spaite(10, 320, 30, 30, 'pickaxe.png')
 craft_pickaxe = Game_Spaite(40, 600, 30, 30, 'pickaxe.png')
 
@@ -79,6 +88,23 @@ zombie_menu = Game_Spaite(-570, 570, 50, 70, 'zombie.png')
 startmenu = transform.scale(image.load('startmenu.jpg'), (1000, 700))
 button_play = Game_Spaite(400, 300, 200, 80, 'button_play.jpg')
 button_exit = Game_Spaite(400, 400, 200, 80, 'button_exit.jpg')
+
+Cobblestone_inventory = Game_Spaite(10, 320, 30, 30, 'stone_block.png')
+
+shaht = Game_Spaite(-300, -300, 300, 200, 'shaht.png')
+
+p = False
+
+def spawn(a, d):
+    a.show()
+    d = True
+    return d
+
+def kill(a, b):
+    a.rect.x = -100
+    a.rect.y = -100
+    b = False
+    return b
 
 if 'Kwvanty' != 'gey':
     class World():
@@ -314,6 +340,7 @@ if 'Kwvanty' != 'gey':
     obj = Objekts_in_the_world(Objekts_in_the_world_data_obj)
     world = World(world_data_scene_1)
     world2 = World(world_data_scene_2)
+    world3 = World(world_data_scene_2)
     craftinghit = Game_Spaite(255, 135, 30, 30, 'crafting_table.png')
     def Check_collision(sprite, tiles):
         global gravitation, vel_y
@@ -344,10 +371,16 @@ Cobblestone_inv = 0
 b1 = 0
 b2 = 0
 b3 = 0
+b5 = 0
+b6 = 0
+open_shaht = 0
 scene_y = 1
+scene_x = 1
 apples_in_inventory = 0
-
+zombie_xp = 10
+floos = 0
 while menu_loop:
+    
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 menu_loop = False
@@ -370,26 +403,59 @@ while menu_loop:
         zombie_menu.rect.x = -100
     fps.tick(60)
     pygame.display.update()
+pygame.mixer.music.play(-1)
+zombie.rect.x = 500
+zombie.rect.y = 100
 while game_loop:
+    if floos != 0:
+        floos -= 1
+    if zombie.rect.colliderect(player.rect) and floos == 0:
+        hp -= 1
+        floos = 10
+    zombie_agro_hit_up.rect.y = zombie.rect.y - 250
+    zombie_agro_hit_up.rect.x = zombie.rect.x - 250
+    zombie_agro_hit_down.rect.y = zombie.rect.y
+    zombie_agro_hit_down.rect.x = zombie.rect.x - 250
+    zombie_agro_hit_left.rect.y = zombie.rect.y - 250
+    zombie_agro_hit_left.rect.x = zombie.rect.x - 250
+    zombie_agro_hit_right.rect.y = zombie.rect.y - 250 
+    zombie_agro_hit_right.rect.x = zombie.rect.x 
+    b6 += 1
+    if b6 >= 100:
+        b6 = 0
+        b5 += 1
     mouse_x, mouse_y = mouse.get_pos()
     row = mouse_y // tile_size
     col = mouse_x // tile_size
     if 'Kwvanty' != 'gey':
-        if player.rect.colliderect(Cobblestounik.rect):
-            Cobblestone_inv += 1
 
         window.blit(background1, (0, 0))
+        if player.rect.x >= 1000 and scene_x == 1:
+            scene_x += 1
+            player.rect.x = 10
+            zombie.rect.x = -10
+        if player.rect.x <= 0 and scene_x == 2:
+            scene_x -= 1
+            zombie.rect.x = 800
+            player.rect.x = 980
         if player.rect.y >= 700 and scene_y == 1:
             scene_y += 1
             player.rect.y = 10
+            zombie.rect.y = 10
         if player.rect.y <= 0 and scene_y == 2:
             scene_y -= 1
             player.rect.y = 680
-        if scene_y == 1:
+            zombie.rect.y = 680
+        if scene_x == 2:
+            world3.draw()
+            b4 = 1
+        else:
+            b4 = 0
+        if scene_y == 1 and scene_x == 1:
             tree.show()
             world.draw()
             obj.draw()
-        if scene_y == 2:
+        if scene_y == 2 and scene_x != 2:
             world2.draw()
         a9 = 0
         if a3 != 0:
@@ -400,6 +466,12 @@ while game_loop:
         inventory_cell4.show()
         inventory_cell5.show()
         inventory_cell6.show()
+        
+        #zombie_agro_hit_up.show()
+        #zombie_agro_hit_down.show()
+        #zombie_agro_hit_left.show()
+        #zombie_agro_hit_right.show()
+    
         inventory_cell_sellect.show()
         if a7 == 0 and scene_y == 2:
             tree.show()
@@ -412,6 +484,13 @@ while game_loop:
         player_in_the_water_img.rect.y = player.rect.y
         keys = pygame.key.get_pressed()
         m1, m2, m3 = pygame.mouse.get_pressed(num_buttons = 3)
+        if b4 == 1:
+            shaht.show()
+            shaht.rect.x = 400
+            shaht.rect.y = 100
+        if b4 == 0:
+            shaht.rect.x = -300
+            shaht.rect.y = -300
         if m1:
             
             if tree.rect.collidepoint(pygame.mouse.get_pos()):
@@ -432,6 +511,9 @@ while game_loop:
                     a2 = 1
                     a4 = 1
                     b3 = 1
+                if shaht.rect.collidepoint(pygame.mouse.get_pos()):
+                    Cobblestone_inv += b5
+                    b5 = 0
         if m2 and a3 == 0 and a10 == 0:
             a3 = 10
             cell += 1
@@ -439,7 +521,18 @@ while game_loop:
         if cell == 7:
             cell = 1
             inventory_cell_sellect.rect.y = 200
-            
+        spawn(zombie, p)
+        if player.rect.colliderect(zombie_agro_hit_up.rect):
+            zombie.rect.y -= 2
+        if player.rect.colliderect(zombie_agro_hit_down.rect):
+            zombie.rect.y += 2
+        if player.rect.colliderect(zombie_agro_hit_left.rect):
+            zombie.rect.x -= 2
+        if player.rect.colliderect(zombie_agro_hit_right.rect):
+            zombie.rect.x += 2
+
+        if Cobblestone_inv >= 1:
+            Cobblestone_inventory.show()
         if m1 and a10 == 1 and Objekts_in_the_world_data_obj[row][col] == 0 and cell == 2 and wood_block_in_inventory >= 1:
             wood_block_in_inventory -= 1
             a9 = 1
@@ -525,6 +618,8 @@ while game_loop:
     if b2 != 0:
         b2 -= 2
         window.blit(Builder_off, (150, 10))
-        
+
+    
+
     fps.tick(60)
     pygame.display.update()
