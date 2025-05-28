@@ -4,8 +4,6 @@ from random import randint
 font.init()
 pygame.mixer.init()
 
-pygame.mixer.music.load("game_melodie.mp3")
-pygame.mixer.music.set_volume(0.5)
 
 
 a2 = 0
@@ -420,9 +418,11 @@ while menu_loop:
         zombie_menu.rect.x = -100
     fps.tick(60)
     pygame.display.update()
-pygame.mixer.music.play(-1)
+
 zombie.rect.x = 500
 zombie.rect.y = 100
+
+#        pygame.mixer.music.play(musik_1)
 while game_loop:
     if floos != 0:
         floos -= 1
@@ -522,8 +522,8 @@ while game_loop:
                 apple.rect.x = tree.rect.x + 40
                 apple.rect.y = tree.rect.y + 40
         if zombie_xp == 0:
-            zombie.rect.x = randint(0, 2000)
-            zombie.rect.y = randint(0, 2000)
+            zombie.rect.x = randint(0, 1000)
+            zombie.rect.y = randint(0, 700)
             zombie_xp = 10
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
